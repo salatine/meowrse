@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-
-read morsecode
-translated=$(echo $morsecode | sed s/meow/\./g | sed s/rawr/-/g)
-echo $translated
