@@ -8,14 +8,15 @@ char* replaceWord(const char* s, const char* oldW,
 {
     char* result;
     int i, cnt = 0;
-    int newWlen = strlen(newW);
-    int oldWlen = strlen(oldW);
 
     if (reverse) {
         const char* temp = oldW;
         oldW = newW;
         newW = temp;
     }
+    int newWlen = strlen(newW);
+    int oldWlen = strlen(oldW);
+
  
     // Counting the number of times old word
     // occur in the string
@@ -48,18 +49,29 @@ char* replaceWord(const char* s, const char* oldW,
 }
 
 char* translateMorse(char* morse, bool reverse) {
-    char letters[] = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 
-                              'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 
-                              's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
+    char* letters[] = {"a", "b", "c", "d", "e", "f", "g", "h", "i", 
+                        "j", "k", "l", "m", "n", "o", "p", "q", "r", 
+                        "s", "t", "u", "v", "w", "x", "y", "z"};
     char* morseLetters[] = {".-", "-...", "-.-.", "-..", ".", "..-.", "--.", "....", "..", 
                               ".---", "-.-", ".-..", "--", "-.", "---", ".--.", "--.-", ".-.", 
                               "...", "-", "..-", "...-", ".--", "-..-", "-.--", "--.."};
-    
-    for (int i = 0; i < sizeof(letters); i++) {
-        morse = replaceWord(morse, morseLetters[i], &letters[i], reverse);
+
+    char* codeLetters = strtok(morse, " ");
+    char* translated = calloc(strlen(morse) + 1, sizeof(char));
+    while (codeLetters != NULL) {
+        for (int i = 0; i < (sizeof(morseLetters) / sizeof(char*)); i++) {
+            if (strcmp(codeLetters, morseLetters[i]) == 0) {
+                if (reverse) {
+                    strcat(translated, morseLetters[i]);
+                } else {
+                    strcat(translated, letters[i]);
+                }
+            }
+        }
+        codeLetters = strtok(NULL, " ");
     }
 
-    return morse;
+    return translated;
 }
 
 char* translateMeow(char* meow, bool reverse) {
@@ -68,12 +80,10 @@ char* translateMeow(char* meow, bool reverse) {
 
 int main(int argc, char *argv[]){
     if (argc == 1) {
-        printf("No code to translate provided\n");
         return 1;
     }
 
     bool reverse = false, character = false;
-
     char* meow = argv[1];
     for (int i = 2; i < argc; i++) {
         if (strcmp(argv[i], "-r") == 0) {
@@ -92,7 +102,7 @@ int main(int argc, char *argv[]){
     } else {
         translated = translateMeow(meow, reverse);
     }
-
+    
     printf("%s\n", translated);
 	return 0;
 }
