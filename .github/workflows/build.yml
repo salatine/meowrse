@@ -6,7 +6,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - run: gcc translateMeow.c -o translateMeow
+      - run: gcc meowrse.c -o meowrse
       - uses: "marvinpinto/action-automatic-releases@latest"
         if: ${{ github.ref == 'refs/heads/main' }}
         with:
@@ -15,4 +15,4 @@ jobs:
           prerelease: true
           title: "Latest version"
           files: |
-            translateMeow
+            meowrse
