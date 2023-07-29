@@ -1,13 +1,30 @@
 # meowrse
 
-meowrse is a script that converts cat code into morse code and vice versa, such that a meow represents a dot (".") and a rawr represents a dash ("-"). For example:
+meowrse is a script that converts (and translates) cat code into morse code and vice versa, such that a meow represents a dot (".") and a rawr represents a dash ("-").
 
-`meowmeowmeowmeow meow meowrawrmeowmeow meowrawrmeowmeow rawrrawrrawr / meowrawrrawr rawrrawrrawr meowrawrmeow meowrawrmeowmeow rawrmeowmeow rawrmeowrawrmeowrawrrawr`
+## Installing
+`$ sudo curl -L -o /usr/local/bin/meowrse https://github.com/salatine/meowrse/releases/download/latest/meowrse && sudo chmod +x /usr/local/bin/meowrse`
+<br></br>
+## Examples
+### cat code to morse code
+`$ meowrse "meow meow"`
 
-translates to "hello world"!
+`. .`
 
+### morse code to cat code
+`$ meowrse ". ." -r`
 
-We are accepting contributions to the project, as it's relatively complex and extremely time demanding.
+`meow meow`
 
+### cat code to characters
+`$ meowrse "meow meow" -c`
+
+`ee`
+
+### characters to cat code
+`$ meowrse "e e" -c -r`
+
+`. .`
+<br></br>
 ## Build
-`gcc meowrse.c -o meowrse`
+`$ gcc meowrse.c -o meowrse`
