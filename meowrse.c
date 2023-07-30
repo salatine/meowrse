@@ -3,17 +3,14 @@
 #include <string.h>
 #include <stdbool.h>
 
+char* translateMeowToMorse(char* meow);
+char* translateMorseToMeow(char* meow);
+
 char* replaceWord(const char* s, const char* oldW,
-                const char* newW, bool reverse)
+                const char* newW)
 {
     char* result;
     int i, cnt = 0;
-
-    if (reverse) {
-        const char* temp = oldW;
-        oldW = newW;
-        newW = temp;
-    }
     int newWlen = strlen(newW);
     int oldWlen = strlen(oldW);
 
@@ -48,34 +45,42 @@ char* replaceWord(const char* s, const char* oldW,
     return result;
 }
 
-char* translateMorse(char* morse, bool reverse) {
-    char* letters[] = {"a", "b", "c", "d", "e", "f", "g", "h", "i", 
-                        "j", "k", "l", "m", "n", "o", "p", "q", "r", 
-                        "s", "t", "u", "v", "w", "x", "y", "z"};
-    char* morseLetters[] = {".-", "-...", "-.-.", "-..", ".", "..-.", "--.", "....", "..", 
-                              ".---", "-.-", ".-..", "--", "-.", "---", ".--.", "--.-", ".-.", 
-                              "...", "-", "..-", "...-", ".--", "-..-", "-.--", "--.."};
-
-    char* codeLetters = strtok(morse, " ");
-    char* translated = calloc(strlen(morse) + 1, sizeof(char));
-    while (codeLetters != NULL) {
-        for (int i = 0; i < (sizeof(morseLetters) / sizeof(char*)); i++) {
-            if (strcmp(codeLetters, morseLetters[i]) == 0) {
-                if (reverse) {
-                    strcat(translated, morseLetters[i]);
-                } else {
-                    strcat(translated, letters[i]);
-                }
-            }
-        }
-        codeLetters = strtok(NULL, " ");
-    }
-
-    return translated;
+char* replaceWithCorresponding(char* str, char* originals[], char* replacements[], int size) {
+  char* strLetters = strtok(str, " ");
+  char* replaced = calloc(strlen(str) * 5 + 1, sizeof(char));
+  while (strLetters != NULL) {
+      for (int i = 0; i < (size); i++) {
+          if (strcmp(strLetters, originals[i]) == 0) {
+              strcat(replaced, replacements[i]);
+          }
+      }
+      strLetters = strtok(NULL, " ");
+  }
+  return replaced;
 }
 
-char* translateMeow(char* meow, bool reverse) {
-    return replaceWord(replaceWord(meow, "meow", ".", reverse), "rawr", "-", reverse);
+char* translateCharactersToMorse(char* characters, char* morseLetters[], char* letters[], int size) {
+  return replaceWithCorresponding(characters, letters, morseLetters, size);
+}
+
+char* translateCharactersToMeow(char* characters, char* morseLetters[], char* letters[], int size) {
+  return translateMorseToMeow(translateCharactersToMorse(characters, morseLetters, letters, size));
+}
+
+char* translateMorseToCharacters(char* morse, char* morseLetters[], char* letters[], int size) {
+  return replaceWithCorresponding(morse, morseLetters, letters, size);
+}
+
+char* translateMeowToCharacters(char* meow, char* morseLetters[], char* letters[], int size) {
+  return translateMorseToCharacters(translateMeowToMorse(meow), morseLetters, letters, size);
+}
+
+char* translateMeowToMorse(char* meow) {
+  return replaceWord(replaceWord(meow, "meow", "."), "rawr", "-");
+}
+
+char* translateMorseToMeow(char* meow) {
+  return replaceWord(replaceWord(meow, ".", "meow"), "-", "rawr");
 }
 
 int main(int argc, char *argv[]){
@@ -94,13 +99,28 @@ int main(int argc, char *argv[]){
             character = true;
         }
     }
-
+    
     char* translated;
+    char* LETTERS[] = {"a", "b", "c", "d", "e", "f", "g", "h", "i", 
+                             "j", "k", "l", "m", "n", "o", "p", "q", "r", 
+                             "s", "t", "u", "v", "w", "x", "y", "z", " "};
+
+    char* MORSE_LETTERS[] = {".-", "-...", "-.-.", "-..", ".", "..-.", "--.", "....", "..", 
+                                   ".---", "-.-", ".-..", "--", "-.", "---", ".--.", "--.-", ".-.", 
+                                   "...", "-", "..-", "...-", ".--", "-..-", "-.--", "--..", "/"};
 
     if (character) {
-        translated = translateMorse(translateMeow(meow, false), reverse);
+      if (reverse) {
+          translated = translateCharactersToMeow(meow, MORSE_LETTERS, LETTERS, 27);
+        } else {
+          translated = translateMeowToCharacters(meow, MORSE_LETTERS, LETTERS, 27);
+        }
     } else {
-        translated = translateMeow(meow, reverse);
+        if (reverse) {
+          translated = translateMorseToMeow(meow);
+        } else {
+          translated = translateMeowToMorse(meow);
+        }
     }
     
     printf("%s\n", translated);
