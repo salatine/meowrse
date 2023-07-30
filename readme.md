@@ -26,7 +26,7 @@ ee
 
 ### characters to cat code
 ```sh
-$ meowrse "e e" --characters -reverse
+$ meowrse "e e" --characters --reverse
 . .
 ```
 
