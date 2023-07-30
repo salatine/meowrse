@@ -4,27 +4,38 @@ meowrse is a script that converts (and translates) cat code into morse code and 
 
 ## Installing
 `$ sudo curl -L -o /usr/local/bin/meowrse https://github.com/salatine/meowrse/releases/download/latest/meowrse && sudo chmod +x /usr/local/bin/meowrse`
-<br></br>
+<br />
 ## Examples
 ### cat code to morse code
-`$ meowrse "meow meow"`
-
-`. .`
+```sh
+$ meowrse "meow meow"
+. .
+```
 
 ### morse code to cat code
-`$ meowrse ". ." -r`
-
-`meow meow`
+```sh
+$ meowrse ". ." --reverse
+meow meow
+```
 
 ### cat code to characters
-`$ meowrse "meow meow" -c`
-
-`ee`
+```sh
+$ meowrse "meow meow" --characters
+ee
+```
 
 ### characters to cat code
-`$ meowrse "e e" -c -r`
+```sh
+$ meowrse "e e" --characters -reverse
+. .
+```
 
-`. .`
-<br></br>
+If you forget the arguments, you can always use the help command:
+
+`$ meowrse --help`
+
+<br />
+
 ## Build
-`$ gcc meowrse.c -o meowrse`
+
+`$ make`
