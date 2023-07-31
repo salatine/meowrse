@@ -8,25 +8,25 @@ meowrse is a script that converts (and translates) cat code into morse code and 
 ## Examples
 ### cat code to morse code
 ```sh
-$ meowrse "meow meow"
+$ meowrse meow-to-morse "meow meow"
 . .
 ```
 
 ### morse code to cat code
 ```sh
-$ meowrse ". ." --reverse
+$ meowrse morse-to-meow ". ."
 meow meow
 ```
 
 ### cat code to characters
 ```sh
-$ meowrse "meow meow" --characters
+$ meowrse meow-to-characters "meow meow"
 ee
 ```
 
 ### characters to cat code
 ```sh
-$ meowrse "e e" --characters --reverse
+$ meowrse characters-to-meow "e e"
 . .
 ```
 
