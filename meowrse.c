@@ -83,28 +83,28 @@ char* translateMorseToMeow(char* meow) {
     return replaceWord(replaceWord(meow, ".", "meow"), "-", "rawr");
 }
 
+void displayHelpMessage() {
+    printf("Usage: meowrse <mode> <code> [options]\n");
+    printf("Modes:\n");
+    printf("  characters-to-meow    Translate characters to meow\n");
+    printf("  meow-to-characters    Translate meow to characters\n");
+    printf("  morse-to-meow         Translate morse to meow\n");
+    printf("  meow-to-morse         Translate meow to morse\n");
+    printf("Options:\n");
+    printf("  -h, --help        Display this help message\n");
+}
+
 int main(int argc, char *argv[]){
-    if (argc == 1) {
+    if (argc < 2) {
+        displayHelpMessage();
         return 1;
     }
 
-    bool reverse = false, character = false;
-    char* meow = argv[1];
-    for (int i = 2; i < argc; i++) {
-        if (strcmp(argv[i], "-r") == 0 || strcmp(argv[i], "--reverse") == 0) {
-            reverse = true;
-        }
-
-        if (strcmp(argv[i], "-c") == 0 || strcmp(argv[i], "--characters") == 0) {
-            character = true;
-        }
-
+    char* translationMode = argv[1];
+    char* meow = argv[2];
+    for (int i = 1; i < argc; i++) {
         if (strcmp(argv[i], "-h") == 0 || strcmp(argv[i], "--help") == 0) {
-            printf("Usage: meowrse <code> [options]\n");
-            printf("Options:\n");
-            printf("  -r, --reverse     Reverse the translation\n");
-            printf("  -c, --characters  Translate to/from characters instead of morse\n");
-            printf("  -h, --help        Display this help message\n");
+            displayHelpMessage();
             return 0;
         }
     }
@@ -118,18 +118,14 @@ int main(int argc, char *argv[]){
         ".---", "-.-", ".-..", "--", "-.", "---", ".--.", "--.-", ".-.", 
         "...", "-", "..-", "...-", ".--", "-..-", "-.--", "--..", "/"};
 
-    if (character) {
-        if (reverse) {
-            translated = translateCharactersToMeow(meow, MORSE_LETTERS, LETTERS, 27);
-        } else {
-            translated = translateMeowToCharacters(meow, MORSE_LETTERS, LETTERS, 27);
-        }
-    } else {
-        if (reverse) {
-            translated = translateMorseToMeow(meow);
-        } else {
-            translated = translateMeowToMorse(meow);
-        }
+    if (strcmp(translationMode, "characters-to-meow") == 0) {
+        translated = translateCharactersToMeow(meow, MORSE_LETTERS, LETTERS, 27);
+    } else if (strcmp(translationMode, "meow-to-characters") == 0) {
+        translated = translateMeowToCharacters(meow, MORSE_LETTERS, LETTERS, 27);
+    } else if (strcmp(translationMode, "morse-to-meow") == 0) {
+        translated = translateMorseToMeow(meow);
+    } else if (strcmp(translationMode, "meow-to-morse") == 0) {
+        translated = translateMeowToMorse(meow);
     }
 
     printf("%s\n", translated);
