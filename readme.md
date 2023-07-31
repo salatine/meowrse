@@ -30,7 +30,7 @@ $ meowrse characters-to-meow "e e"
 . .
 ```
 
-If you forget the arguments, you can always use the help command:
+If you forget any command, you can always use the help command:
 
 `$ meowrse --help`
 
