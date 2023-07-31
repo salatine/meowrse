@@ -1,4 +1,4 @@
-# meowrse
+# <img src="https://github.com/ekisu/meowrse/assets/5082637/f2bf3b0d-297c-485f-bff2-579c160df8d5" style="height: 2em"/> meowrse
 
 meowrse is a script that converts (and translates) cat code into morse code and vice versa, such that a meow represents a dot (".") and a rawr represents a dash ("-").
 
