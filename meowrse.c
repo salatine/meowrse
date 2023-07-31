@@ -20,7 +20,6 @@ char* replaceWord(const char* s, const char* oldW,
     for (i = 0; s[i] != '\0'; i++) {
         if (strstr(&s[i], oldW) == &s[i]) {
             cnt++;
-
             // Jumping to index after the old word.
             i += oldWlen - 1;
         }
@@ -49,13 +48,16 @@ char* replaceWithCorresponding(char* str, char* originals[], char* replacements[
     char* strLetters = strtok(str, " ");
     char* replaced = calloc(strlen(str) * 5 + 1, sizeof(char));
     while (strLetters != NULL) {
+        int cnt = 0;
         for (int i = 0; i < (size); i++) {
             if (strcmp(strLetters, originals[i]) == 0) {
-                strcat(replaced, replacements[i]);
+                strncat(replaced, replacements[i], cnt+1);
+                cnt++;
             }
         }
         strLetters = strtok(NULL, " ");
     }
+    
     return replaced;
 }
 
@@ -83,6 +85,18 @@ char* translateMorseToMeow(char* meow) {
     return replaceWord(replaceWord(meow, ".", "meow"), "-", "rawr");
 }
 
+char* addSpaces(char* str) {
+    char* withSpaces = calloc((strlen(str) + 1) * 2, sizeof(char));
+    int spaceIndex = 0;
+    for (int i = 0 ; i < strlen(str); i++) {
+        withSpaces[spaceIndex] = str[i];
+        withSpaces[++spaceIndex] = ' ';
+        spaceIndex = spaceIndex + 1;
+    }
+    
+    return withSpaces;
+}
+
 void displayHelpMessage() {
     printf("Usage: meowrse <mode> <code> [options]\n");
     printf("Modes:\n");
@@ -94,14 +108,22 @@ void displayHelpMessage() {
     printf("  -h, --help        Display this help message\n");
 }
 
-int main(int argc, char *argv[]){
-    if (argc < 2) {
+int main(int argc, char *argv[]){    
+    if (argc < 2) { // if no mode is provided, display help message
         displayHelpMessage();
         return 1;
     }
 
+    char* meow;
+    if (argc < 3) { // if no code is provided, read from stdin
+        int size = 1000;
+        meow = calloc(size + 1, sizeof(char*));
+        fgets(meow, size, stdin);
+    } else {
+        meow = argv[2];
+    }
+
     char* translationMode = argv[1];
-    char* meow = argv[2];
     for (int i = 1; i < argc; i++) {
         if (strcmp(argv[i], "-h") == 0 || strcmp(argv[i], "--help") == 0) {
             displayHelpMessage();
@@ -119,6 +141,7 @@ int main(int argc, char *argv[]){
         "...", "-", "..-", "...-", ".--", "-..-", "-.--", "--..", "/"};
 
     if (strcmp(translationMode, "characters-to-meow") == 0) {
+        meow = addSpaces(meow);
         translated = translateCharactersToMeow(meow, MORSE_LETTERS, LETTERS, 27);
     } else if (strcmp(translationMode, "meow-to-characters") == 0) {
         translated = translateMeowToCharacters(meow, MORSE_LETTERS, LETTERS, 27);
@@ -126,6 +149,9 @@ int main(int argc, char *argv[]){
         translated = translateMorseToMeow(meow);
     } else if (strcmp(translationMode, "meow-to-morse") == 0) {
         translated = translateMeowToMorse(meow);
+    } else {
+        printf("Invalid mode\n");
+        return 1;
     }
 
     printf("%s\n", translated);
