@@ -1,6 +1,6 @@
 all: meowrse.c
 	ifeq ($(OS),Windows_NT)
-    gcc -o meowrse.exe meowrse.c
+    	gcc -no-pie -static -o meowrse.exe meowrse.c
 	else
-    gcc -o meowrse meowrse.c
+    	gcc -no-pie -static -o meowrse meowrse.c
 	endif
