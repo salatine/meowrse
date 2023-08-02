@@ -127,8 +127,15 @@ int main(int argc, char *argv[]){
     char* meow;
     if (argc < 3) { // if no code is provided, read from stdin
         int size = 1000;
-        meow = calloc(size + 1, sizeof(char*));
-        fgets(meow, size, stdin);
+        meow = calloc(size + 1, sizeof(char));
+
+        while (!feof(stdin)) {
+            char* s = calloc(size + 1, sizeof(char));
+            meow = realloc(meow, (strlen(meow) + size + 1) * sizeof(char));
+            fgets(s, size, stdin);
+            strcat(meow, s);
+        }
+
     } else {
         meow = argv[2];
     }
