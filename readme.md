@@ -20,13 +20,13 @@ meow meow
 
 ### cat code to characters
 ```sh
-$ meowrse meow-to-characters "meow meow"
+$ meowrse meow-to-char "meow meow"
 ee
 ```
 
 ### characters to cat code
 ```sh
-$ meowrse characters-to-meow "e e"
+$ meowrse char-to-meow "e e"
 . .
 ```
 

@@ -62,7 +62,17 @@ char* replaceWithCorresponding(char* str, char* originals[], char* replacements[
 }
 
 char* translateCharactersToMorse(char* characters, char* morseLetters[], char* letters[], int size) {
-    return replaceWithCorresponding(characters, letters, morseLetters, size);
+    char* translated = calloc(strlen(characters) * 5 + 1, sizeof(char));
+    for (int i = 0; i < strlen(characters); i++) {
+        for (int j = 0; j < size; j++) {
+            if (characters[i] == letters[j][0]) {
+                strcat(translated, morseLetters[j]);
+                strcat(translated, " ");
+                }
+            }
+        }
+
+    return translated;
 }
 
 char* translateCharactersToMeow(char* characters, char* morseLetters[], char* letters[], int size) {
@@ -100,8 +110,8 @@ char* addSpaces(char* str) {
 void displayHelpMessage() {
     printf("Usage: meowrse <mode> <code> [options]\n");
     printf("Modes:\n");
-    printf("  characters-to-meow    Translate characters to meow\n");
-    printf("  meow-to-characters    Translate meow to characters\n");
+    printf("  char-to-meow    Translate characters to meow\n");
+    printf("  meow-to-char    Translate meow to characters\n");
     printf("  morse-to-meow         Translate morse to meow\n");
     printf("  meow-to-morse         Translate meow to morse\n");
     printf("Options:\n");
@@ -140,10 +150,9 @@ int main(int argc, char *argv[]){
         ".---", "-.-", ".-..", "--", "-.", "---", ".--.", "--.-", ".-.", 
         "...", "-", "..-", "...-", ".--", "-..-", "-.--", "--..", "/"};
 
-    if (strcmp(translationMode, "characters-to-meow") == 0) {
-        meow = addSpaces(meow);
+    if (strcmp(translationMode, "char-to-meow") == 0) {
         translated = translateCharactersToMeow(meow, MORSE_LETTERS, LETTERS, 27);
-    } else if (strcmp(translationMode, "meow-to-characters") == 0) {
+    } else if (strcmp(translationMode, "meow-to-char") == 0) {
         translated = translateMeowToCharacters(meow, MORSE_LETTERS, LETTERS, 27);
     } else if (strcmp(translationMode, "morse-to-meow") == 0) {
         translated = translateMorseToMeow(meow);
