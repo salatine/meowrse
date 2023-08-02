@@ -27,7 +27,7 @@ ee
 ### characters to cat code
 ```sh
 $ meowrse char-to-meow "e e"
-. .
+meow / meow
 ```
 
 If you forget any command, you can always use the help command:
