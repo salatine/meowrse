@@ -134,7 +134,7 @@ int main(int argc, char *argv[]){
 
     char* meow;
     if (argc < 3) { // if no code is provided, read from stdin
-        int lineSize = 1000;
+        int lineSize = 10000;
         meow = calloc(lineSize + 1, sizeof(char));
         int size = lineSize + 1;
 
