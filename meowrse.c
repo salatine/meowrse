@@ -118,7 +118,15 @@ void displayHelpMessage() {
     printf("  -h, --help        Display this help message\n");
 }
 
-int main(int argc, char *argv[]){    
+int main(int argc, char *argv[]){
+    char* translationMode = argv[1];
+    for (int i = 1; i < argc; i++) {
+        if (strcmp(argv[i], "-h") == 0 || strcmp(argv[i], "--help") == 0) {
+            displayHelpMessage();
+            return 0;
+        }
+    }
+
     if (argc < 2) { // if no mode is provided, display help message
         displayHelpMessage();
         return 1;
@@ -126,26 +134,20 @@ int main(int argc, char *argv[]){
 
     char* meow;
     if (argc < 3) { // if no code is provided, read from stdin
-        int size = 1000;
-        meow = calloc(size + 1, sizeof(char));
+        int lineSize = 1000;
+        meow = calloc(lineSize + 1, sizeof(char));
+        int size = lineSize + 1;
 
         while (!feof(stdin)) {
-            char* s = calloc(size + 1, sizeof(char));
-            meow = realloc(meow, (strlen(meow) + size + 1) * sizeof(char));
-            fgets(s, size, stdin);
+            char* s = calloc(lineSize + 1, sizeof(char));
+            meow = realloc(meow, (size + strlen(s) + 1) * sizeof(char));
+            fgets(s, lineSize, stdin);
             strcat(meow, s);
+            free(s);
         }
 
     } else {
         meow = argv[2];
-    }
-
-    char* translationMode = argv[1];
-    for (int i = 1; i < argc; i++) {
-        if (strcmp(argv[i], "-h") == 0 || strcmp(argv[i], "--help") == 0) {
-            displayHelpMessage();
-            return 0;
-        }
     }
 
     char* translated;
