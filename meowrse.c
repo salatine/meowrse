@@ -120,17 +120,17 @@ void displayHelpMessage() {
 }
 
 int main(int argc, char *argv[]){
+    if (argc < 2) { // if no mode is provided, display help message
+        displayHelpMessage();
+        return 1;
+    }
+
     char* translationMode = argv[1];
     for (int i = 1; i < argc; i++) {
         if (strcmp(argv[i], "-h") == 0 || strcmp(argv[i], "--help") == 0) {
             displayHelpMessage();
             return 0;
         }
-    }
-
-    if (argc < 2) { // if no mode is provided, display help message
-        displayHelpMessage();
-        return 1;
     }
 
     char* meow;
