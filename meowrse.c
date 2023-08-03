@@ -45,8 +45,8 @@ char* replaceWord(const char* s, const char* oldW,
 }
 
 char* replaceWithCorresponding(char* str, char* originals[], char* replacements[], int size) {
-    char* strLetters = strtok(str, " ");
     char* replaced = calloc(strlen(str) * 5 + 1, sizeof(char));
+    char* strLetters = strtok(str, " ");
     while (strLetters != NULL) {
         int cnt = 0;
         for (int i = 0; i < (size); i++) {
