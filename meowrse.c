@@ -62,6 +62,48 @@ char* replaceWithCorresponding(char* str, char* originals[], char* replacements[
     return replaced;
 }
 
+char* translateMeowToFile(char* meow) {
+    FILE* file = fopen("meowrse", "wb");
+}
+
+char* translateFileToMeow(char* filePath) {
+    long bytesLength;
+    char* bytes = getBytesArray(filePath, &bytesLength);
+
+    // translate every bit, 0 = meow, 1 = rawr
+    // every bit turns into 4 bytes (32 times larger)
+    char* translated = calloc(bytesLength * 32 + 1, sizeof(char));
+
+    for (int i = 0; i < bytesLength; i++) {
+        for (int j = 0; j < 8; j++) {
+            if (bytes[i] & (1 << j)) {
+                strcat(translated, "rawr");
+                continue;
+            }
+
+            strcat(translated, "meow");
+        }
+    }
+
+    return translated;
+}
+
+char* getBytesArray(char* filePath, long* outArraySize) {
+    FILE* file = fopen(filePath, "rb");
+    // jump to the end of the file
+    fseek(file, 0, SEEK_END);
+    long fileLength = ftell(file);
+    // jump back to the beginning of the file
+    rewind(file);
+
+    char* buffer = calloc(fileLength, sizeof(char));
+    fread(buffer, fileLength, 1, file);
+    fclose(file);
+
+    *outArraySize = fileLength;
+    return buffer;
+}
+
 char* translateCharactersToMorse(char* characters, char* morseLetters[], char* letters[], int size) {
     char* translated = calloc(strlen(characters) * 5 + 1, sizeof(char));
     for (int i = 0; i < strlen(characters); i++) {
@@ -175,6 +217,10 @@ int main(int argc, char *argv[]){
         translated = translateMorseToMeow(meow);
     } else if (strcmp(translationMode, "meow-to-morse") == 0) {
         translated = translateMeowToMorse(meow);
+    } else if (strcmp(translationMode, "meow-to-file") == 0) {
+        translated = translateMeowToFile(meow);
+    } else if (strcmp(translationMode, "file-to-meow") == 0) {
+        translated = translateFileToMeow(meow);
     } else {
         printf("Invalid mode\n");
         return 1;
