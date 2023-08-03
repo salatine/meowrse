@@ -153,16 +153,18 @@ int main(int argc, char *argv[]){
     char* translated;
     char* LETTERS[] = {"a", "b", "c", "d", "e", "f", "g", "h", "i", 
         "j", "k", "l", "m", "n", "o", "p", "q", "r", 
-        "s", "t", "u", "v", "w", "x", "y", "z", " "};
+        "s", "t", "u", "v", "w", "x", "y", "z", " ",
+        "1", "2", "3", "4", "5", "6", "7", "8", "9", "0"};
 
     char* MORSE_LETTERS[] = {".-", "-...", "-.-.", "-..", ".", "..-.", "--.", "....", "..", 
         ".---", "-.-", ".-..", "--", "-.", "---", ".--.", "--.-", ".-.", 
-        "...", "-", "..-", "...-", ".--", "-..-", "-.--", "--..", "/"};
+        "...", "-", "..-", "...-", ".--", "-..-", "-.--", "--..", "/",
+        ".----", "..---", "...--", "....-", ".....", "-....", "--...", "---..", "----.", "-----"};
 
     if (strcmp(translationMode, "char-to-meow") == 0) {
-        translated = translateCharactersToMeow(meow, MORSE_LETTERS, LETTERS, 27);
+        translated = translateCharactersToMeow(meow, MORSE_LETTERS, LETTERS, 37);
     } else if (strcmp(translationMode, "meow-to-char") == 0) {
-        translated = translateMeowToCharacters(meow, MORSE_LETTERS, LETTERS, 27);
+        translated = translateMeowToCharacters(meow, MORSE_LETTERS, LETTERS, 37);
     } else if (strcmp(translationMode, "morse-to-meow") == 0) {
         translated = translateMorseToMeow(meow);
     } else if (strcmp(translationMode, "meow-to-morse") == 0) {
