@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
+#include <ctype.h>
 
 char* translateMeowToMorse(char* meow);
 char* translateMorseToMeow(char* meow);
@@ -148,6 +149,10 @@ int main(int argc, char *argv[]){
 
     } else {
         meow = argv[2];
+    }
+
+    for (int i = 0; i < strlen(meow); i++) {
+        meow[i] = tolower(meow[i]);
     }
 
     char* translated;
