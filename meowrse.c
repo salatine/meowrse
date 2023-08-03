@@ -135,13 +135,14 @@ int main(int argc, char *argv[]){
 
     char* meow;
     if (argc < 3) { // if no code is provided, read from stdin
-        int lineSize = 10000;
+        int lineSize = 1000;
         meow = calloc(lineSize + 1, sizeof(char));
         int size = lineSize + 1;
 
         while (!feof(stdin)) {
             char* s = calloc(lineSize + 1, sizeof(char));
-            meow = realloc(meow, (size + strlen(s) + 1) * sizeof(char));
+            size = size + lineSize + 1;
+            meow = realloc(meow, (size) * sizeof(char));
             fgets(s, lineSize, stdin);
             strcat(meow, s);
             free(s);
