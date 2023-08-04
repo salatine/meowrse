@@ -39,6 +39,16 @@ $ meowrse char-to-meow "e e"
 meow / meow
 ```
 
+### encrypt a file in cat code
+```sh
+$ meowrse file-to-meow cat.png -o secretcat.txt
+```
+
+### decrypt cat code to a file
+```sh
+$ meowrse meow-to-file secretcat.txt -o cat.png
+```
+
 If you forget any command, you can always use the help command:
 
 `$ meowrse --help`
