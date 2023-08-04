@@ -93,7 +93,6 @@ void translateMeowToFile(char* filePath, char* output) {
 
     fwrite(translated, translatedSize, 1, fileTranslated);
     fclose(fileTranslated);
-    return;
 }
 
 void translateFileToMeow(char* filePath, char* output) {
@@ -115,7 +114,6 @@ void translateFileToMeow(char* filePath, char* output) {
         }
     }
     fwrite(translated, strlen(translated), 1, fileTranslated);
-    return;
 }
 
 char* translateCharactersToMorse(char* characters, char* morseLetters[], char* letters[], int size) {
