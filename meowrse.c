@@ -3,7 +3,6 @@
 #include <string.h>
 #include <stdbool.h>
 #include <ctype.h>
-#include <libgen.h>
 
 char* translateMeowToMorse(char* meow);
 char* translateMorseToMeow(char* meow);
@@ -61,7 +60,7 @@ char* replaceWithCorresponding(char* str, char* originals[], char* replacements[
     return replaced;
 }
 
-char* getBytesArray(char* filePath, long* outArraySize) {
+char* readFileBytes(char* filePath, long* outArraySize) {
     FILE* file = fopen(filePath, "rb");
     // jump to the end of the file
     fseek(file, 0, SEEK_END);
@@ -77,34 +76,29 @@ char* getBytesArray(char* filePath, long* outArraySize) {
     return buffer;
 }
 
-char* translateMeowToFile(char* filePath, char* output) {
+void translateMeowToFile(char* filePath, char* output) {
     long size = strlen(filePath) * sizeof(char);
-    char* meow = getBytesArray(filePath, &size);
+    char* meow = readFileBytes(filePath, &size);
 
     FILE* fileTranslated = fopen(output, "wb");
-    int translatedSize = strlen(meow) / 32 + 1;
+    int translatedSize = strlen(meow) / 32;
     char* translated = calloc(translatedSize, sizeof(char));
 
-    for (int i = 0; i < translatedSize; i = i + 4 ) {
-        char* rawr = calloc(4 + 1, sizeof(char));
-        for (int byte = 0; byte < 4; byte++) {
-            rawr[byte] = meow[i + byte];
-        }
-
-        char bits = strcmp(rawr, "rawr") == 0 ? 1 : 0;
-        for (int j = 0; j < 8; j++) {
-            translated[7 - i] = translated[7 - i] | (bits << j);
+    for (int byte = 0; byte < translatedSize; byte++) {
+        for (int bit = 0; bit < 8; bit++) {
+            int isRawr = strncmp(&meow[32 * byte + 4 * bit], "rawr", 4) == 0 ? 1 : 0;
+            translated[byte] = translated[byte] | (isRawr << bit);
         }
     }
 
     fwrite(translated, translatedSize, 1, fileTranslated);
     fclose(fileTranslated);
-    return "file translated!";
+    return;
 }
 
-char* translateFileToMeow(char* filePath, char* output) {
+void translateFileToMeow(char* filePath, char* output) {
     long bytesLength;
-    char* bytes = getBytesArray(filePath, &bytesLength);
+    char* bytes = readFileBytes(filePath, &bytesLength);
 
     // translate every bit, 0 = meow, 1 = rawr
     // every bit turns into 4 bytes (32 times larger)
@@ -121,7 +115,7 @@ char* translateFileToMeow(char* filePath, char* output) {
         }
     }
     fwrite(translated, strlen(translated), 1, fileTranslated);
-    return "file translated!";
+    return;
 }
 
 char* translateCharactersToMorse(char* characters, char* morseLetters[], char* letters[], int size) {
@@ -184,9 +178,10 @@ void displayHelpMessage() {
     printf("  -o, --output      Output to a file (file translation only)\n");
 }
 
-char* lower(char* s, int size) {
-    char* lower = calloc(size, sizeof(char));
-    for (int i = 0; i < size; i++) {
+char* lower(char* s) {
+    size_t length = strlen(s);
+    char* lower = calloc(length + 1, sizeof(char));
+    for (int i = 0; i < length; i++) {
         lower[i] = tolower(s[i]);
     }
 
@@ -241,7 +236,7 @@ int main(int argc, char *argv[]){
         ".----", "..---", "...--", "....-", ".....", "-....", "--...", "---..", "----.", "-----"};
 
     if (strcmp(translationMode, "char-to-meow") == 0) {
-        meow = lower(meow, strlen(meow) + 1);
+        meow = lower(meow);
         translated = translateCharactersToMeow(meow, MORSE_LETTERS, LETTERS, 38);
     } else if (strcmp(translationMode, "meow-to-char") == 0) {
         translated = translateMeowToCharacters(meow, MORSE_LETTERS, LETTERS, 38);
@@ -250,14 +245,15 @@ int main(int argc, char *argv[]){
     } else if (strcmp(translationMode, "meow-to-morse") == 0) {
         translated = translateMeowToMorse(meow);
     } else if (strcmp(translationMode, "meow-to-file") == 0) {
-        translated = translateMeowToFile(meow, output);
+        translateMeowToFile(meow, output);
     } else if (strcmp(translationMode, "file-to-meow") == 0) {
-        translated = translateFileToMeow(meow, output);
+        translateFileToMeow(meow, output);
     } else {
         printf("Invalid mode\n");
         return 1;
     }
-
-    printf("%s\n", translated);
+    
+    
+    !translated || printf("%s\n", translated);
     return 0;
 }
