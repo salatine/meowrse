@@ -117,12 +117,17 @@ void translateFileToMeow(char* filePath, char* output) {
 }
 
 char* translateCharactersToMorse(char* characters, char* morseLetters[], char* letters[], int size) {
-    char* translated = calloc(strlen(characters) * 5 + 1, sizeof(char));
-    for (int i = 0; i < strlen(characters); i++) {
+    int strLength = strlen(characters);
+    char* translated = calloc(strLength * 5 + 1, sizeof(char));
+    int count = 0;
+    for (int i = 0; i < strLength; i++) {
         for (int j = 0; j < size; j++) {
             if (characters[i] == letters[j][0]) {
-                memcpy(&translated[strlen(translated)], morseLetters[j], strlen(morseLetters[j]));
-                memcpy(&translated[strlen(translated)], " ", 1);
+                int letterLength = strlen(morseLetters[j]);
+                memcpy(&translated[count], morseLetters[j], letterLength);
+                count = count + letterLength;
+                memcpy(&translated[count], " ", 1);
+                count++;
                 }
             }
         }
