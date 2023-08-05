@@ -1,5 +1,11 @@
 name: build
-on: [push]
+on: 
+  workflow_dispatch: {}
+  push:
+    branches:
+      - main
+  pull_request: {}
+
 jobs:
 
   build:
@@ -8,10 +14,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: >
-          sudo apt-get update &&
-          sudo apt-get install -y mingw-w64 &&
-          gcc -no-pie -static -o meowrse meowrse.c &&
-          x86_64-w64-mingw32-gcc -static -no-pie -o meowrse.exe meowrse.c
+          sudo apt -y install libcunit1 libcunit1-doc libcunit1-dev &&
+          make
 
       - uses: "marvinpinto/action-automatic-releases@latest"
         if: ${{ github.ref == 'refs/heads/main' }}
@@ -22,4 +26,3 @@ jobs:
           title: "Latest version"
           files: |
             meowrse
-            meowrse.exe
