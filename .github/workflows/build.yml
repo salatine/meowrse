@@ -8,6 +8,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: >
+          sudo apt -y install libcunit1 libcunit1-doc libcunit1-dev
           make
 
       - uses: "marvinpinto/action-automatic-releases@latest"
