@@ -14,8 +14,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: >
-          sudo apt -y install libcunit1 libcunit1-doc libcunit1-dev &&
-          make
+          sudo apt -y install libcunit1 libcunit1-doc libcunit1-dev mingw-w64 &&
+          make &&
+          make CC=x86_64-w64-mingw32-gcc EXT=.exe
 
       - uses: "marvinpinto/action-automatic-releases@latest"
         if: ${{ github.ref == 'refs/heads/main' }}
@@ -26,3 +27,4 @@ jobs:
           title: "Latest version"
           files: |
             meowrse
+            meowrse.exe
