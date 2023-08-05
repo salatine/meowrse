@@ -45,13 +45,15 @@ char* replaceWord(const char* s, const char* oldWord, const char* newWord) {
 
 char* replaceWithCorresponding(char* str, char* originals[], char* replacements[], int size) {
     char* replaced = calloc(strlen(str) * 5 + 1, sizeof(char));
+    size_t replacedSize = 0;
     char* strLetters = strtok(str, " ");
     while (strLetters != NULL) {
         int count = 0;
         for (int i = 0; i < (size); i++) {
             if (strcmp(strLetters, originals[i]) == 0) {
-                strncat(replaced, replacements[i], count+1);
-                count++;
+                size_t replacementLength = strlen(replacements[i]);
+                memcpy(&replaced[replacedSize], replacements[i], replacementLength);
+                replacedSize += replacementLength;
             }
         }
         strLetters = strtok(NULL, " ");
@@ -211,19 +213,30 @@ int main(int argc, char *argv[]){
     }
     char* meow;
     if (argc < 3) { // if no code is provided, read from stdin
-        int lineSize = 1000;
-        meow = calloc(lineSize + 1, sizeof(char));
-        int size = lineSize + 1;
+        size_t capacity = 1000;
+        meow = calloc(capacity, sizeof(char));
+        size_t size = 0;
 
         while (!feof(stdin)) {
-            char* s = calloc(lineSize + 1, sizeof(char));
-            size = size + lineSize + 1;
-            meow = realloc(meow, (size) * sizeof(char));
-            fgets(s, lineSize, stdin);
-            strcat(meow, s);
-            free(s);
+            if (size == capacity) {
+                // We need to extend the `meow` capacity
+                size_t newCapacity = capacity * 2;
+                meow = realloc(meow, newCapacity * sizeof(char));
+                capacity = newCapacity;
+            }
+
+            size_t availableBytes = capacity - size;
+            size_t bytesRead = fread(&meow[size], sizeof(char), availableBytes, stdin);
+
+            size += bytesRead;
         }
 
+        // Add a null-terminator
+        if (size == capacity) {
+            meow = realloc(meow, (capacity + 1) * sizeof(char));
+        }
+
+        meow[size++] = '\0';
     } else { 
         meow = argv[2];
     }
