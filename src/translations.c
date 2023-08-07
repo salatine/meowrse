@@ -87,7 +87,7 @@ char* translateMorseToMeow(char* meow) {
 }
 
 char* translate(char* meow, char* translationMode, char* output, int* exit) {
-    char* translated;
+    char* translated = 0;
     if (strcmp(translationMode, "char-to-meow") == 0) {
         meow = lower(meow);
         translated = translateCharactersToMeow(meow, MORSE_LETTERS, LETTERS, LETTERS_SIZE);
