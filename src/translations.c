@@ -43,6 +43,7 @@ void translateFileToMeow(char* filePath, char* output) {
         }
     }
     fwrite(translated, strlen(translated), 1, fileTranslated);
+    fclose(fileTranslated);
 }
 
 char* translateCharactersToMorse(char* characters, char* morseLetters[], char* letters[], int size) {
