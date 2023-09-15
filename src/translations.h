@@ -9,4 +9,8 @@ char* translateMeowToCharacters(char* meow, char* morseLetters[], char* letters[
 char* translateMeowToMorse(char* meow);
 char* translateMorseToMeow(char* meow);
 char* translate(char* meow, char* translationMode, char* output, int* exit);
+char* translateKanaToMeow(char* kana);
+char* translateKanaToCharacters(char* kana);
+char* translateCharactersToKana(char* characters);
+char* translateMeowToKana(char* meow);
 #endif
