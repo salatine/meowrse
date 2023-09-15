@@ -49,6 +49,30 @@ $ meowrse file-to-meow cat.png -o secretcat.txt
 $ meowrse meow-to-file secretcat.txt -o cat.png
 ```
 
+### kana to cat code
+```sh
+$ meowrse kana-to-meow "あ"
+meowrawr
+```
+
+### cat code to kana
+```sh
+$ meowrse meow-to-kana "meowrawr"
+あ
+```
+
+### characters to kana
+```sh
+$ meowrse char-to-kana "あ"
+a
+```
+
+### kana to characters
+```sh
+$ meowrse kana-to-char "a"
+あ
+```
+
 If you forget any command, you can always use the help command:
 
 `$ meowrse --help`

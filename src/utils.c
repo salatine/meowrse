@@ -14,6 +14,10 @@ void displayHelpMessage() {
     printf("  meow-to-morse         Translate meow to morse\n");
     printf("  file-to-meow         Translate file to meow\n");
     printf("  meow-to-file         Translate meow to file\n");
+    printf("  kana-to-meow         Translate kana to meow\n");
+    printf("  meow-to-kana         Translate meow to kana\n");
+    printf("  kana-to-char         Translate kana to characters\n");
+    printf("  char-to-kana         Translate characters to kana\n");
     printf("Options:\n");
     printf("  -h, --help        Display this help message\n");
     printf("  -o, --output      Output to a file (file translation only)\n");

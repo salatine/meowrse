@@ -46,6 +46,22 @@ void translateFileToMeow(char* filePath, char* output) {
     fclose(fileTranslated);
 }
 
+char* translateKanaToCharacters(char* kana) {
+    return replaceWithCorresponding(kana, KANA, LETTERS, LETTERS_SIZE);
+}
+
+char* translateKanaToMeow(char* kana) {
+    return translateCharactersToMeow(translateKanaToCharacters(kana), MORSE_LETTERS, LETTERS, LETTERS_SIZE); 
+}
+
+char* translateCharactersToKana(char* characters) {
+    return replaceWithCorresponding(characters, LETTERS, KANA, LETTERS_SIZE);
+}
+
+char* translateMeowToKana(char* meow) {
+    return translateCharactersToKana(translateMeowToCharacters(meow, MORSE_LETTERS, LETTERS, LETTERS_SIZE));
+}
+
 char* translateCharactersToMorse(char* characters, char* morseLetters[], char* letters[], int size) {
     int strLength = strlen(characters);
     char* translated = calloc(strLength * 5 + 1, sizeof(char));
@@ -98,6 +114,14 @@ char* translate(char* meow, char* translationMode, char* output, int* exit) {
         translated = translateMorseToMeow(meow);
     } else if (strcmp(translationMode, "meow-to-morse") == 0) {
         translated = translateMeowToMorse(meow);
+    } else if (strcmp(translationMode, "kana-to-char") == 0) {
+        translated = translateKanaToCharacters(meow);
+    } else if (strcmp(translationMode, "char-to-kana") == 0) {
+        translated = translateCharactersToKana(meow);
+    } else if (strcmp(translationMode, "meow-to-kana") == 0) {
+        translated = translateMeowToKana(meow);
+    } else if (strcmp(translationMode, "kana-to-meow") == 0) {
+        translated = translateKanaToMeow(meow);
     } else if (strcmp(translationMode, "meow-to-file") == 0) {
         translateMeowToFile(meow, output);
     } else if (strcmp(translationMode, "file-to-meow") == 0) {
